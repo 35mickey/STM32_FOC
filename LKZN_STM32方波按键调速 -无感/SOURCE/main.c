@@ -21,19 +21,19 @@
 #define ADC1_DR_Address    ((u32)0x4001244C)
 
 /////////////////////////////////////////////////
-////ÏÂÇÅ±Û¿ØÖÆ  
-#define PWM_UL_ON()  GPIO_WriteBit(GPIOA,GPIO_Pin_7,1) 
+////ä¸‹æ¡¥è‡‚æ§åˆ¶
+#define PWM_UL_ON()  GPIO_WriteBit(GPIOA,GPIO_Pin_7,1)
 #define PWM_VL_ON()  GPIO_WriteBit(GPIOB,GPIO_Pin_0,1)
 #define PWM_WL_ON()  GPIO_WriteBit(GPIOB,GPIO_Pin_1,1)
 
 #define PWM_UL_OFF()  GPIO_WriteBit(GPIOA,GPIO_Pin_7,0)
 #define PWM_VL_OFF()  GPIO_WriteBit(GPIOB,GPIO_Pin_0,0)
 #define PWM_WL_OFF()  GPIO_WriteBit(GPIOB,GPIO_Pin_1,0)
-/////ÎŞ¸ĞÆô¶¯»»Ïò´ÎÊı
+/////æ— æ„Ÿå¯åŠ¨æ¢å‘æ¬¡æ•°
 #define COM_CNT 200
-///// ÎŞ¸ĞÆô¶¯·´µç¶¯ÊÆ¹ıÁãµã´ÎÊı
+///// æ— æ„Ÿå¯åŠ¨åç”µåŠ¨åŠ¿è¿‡é›¶ç‚¹æ¬¡æ•°
 #define ST_CNT 3
-/////ÓÃ»§¶¨Òå±äÁ¿
+/////ç”¨æˆ·å®šä¹‰å˜é‡
 #define BIT0 1
 #define BIT1 2
 #define BIT2 4
@@ -54,9 +54,9 @@ volatile struct {
 
 enum MOSTAUS
 {
-	CHONGD,ALIGNED,STARRT,RUN,FAULT,IDLE  
+	CHONGD,ALIGNED,STARRT,RUN,FAULT,IDLE
 };
-enum MOSTAUS motorstaus=IDLE; 
+enum MOSTAUS motorstaus=IDLE;
 unsigned int DesiredSpeed=500;
 unsigned int ActualSpeed;
 unsigned int pwm=500;
@@ -66,7 +66,7 @@ vu16 ADC_DMABUF;
 unsigned int AveActualSpeed;
 unsigned char AveNum;
 unsigned char j;
-		 
+
 
 float kp=0.1,ki=0.08,kd=0.0;
 int ek=0,ek1=0,ek2=0;
@@ -75,28 +75,28 @@ int du;
 int ekSpeed=0;
 u16 motor_statue=0;
 u16  startcnt=0;
-u8   StartOk;//Æô¶¯³É¹¦±êÖ¾
-u16  Comtime;//Æô¶¯Ê±»»Ïà´ÎÊı
-u16  stComcount;//Æô¶¯Ê±·´µç¶¯ÊÆ 
-u16  bhtime=0;//»ô¶ûÇĞ»»ÂË²¨Ê±¼ä
-u8   bhallstep;//»ô¶û»»ÏàË³Ğò±äÁ¿
+u8   StartOk;//å¯åŠ¨æˆåŠŸæ ‡å¿—
+u16  Comtime;//å¯åŠ¨æ—¶æ¢ç›¸æ¬¡æ•°
+u16  stComcount;//å¯åŠ¨æ—¶åç”µåŠ¨åŠ¿
+u16  bhtime=0;//éœå°”åˆ‡æ¢æ»¤æ³¢æ—¶é—´
+u8   bhallstep;//éœå°”æ¢ç›¸é¡ºåºå˜é‡
 
-u8 RxBuffer[8];//´®¿Ú½ÓÊÕ»º´æ
+u8   RxBuffer[8];//ä¸²å£æ¥æ”¶ç¼“å­˜
 
-u8   bHallStemps[8]={0x07,0x05,0x03,0x04,0x01,0x00,0x02,0x07};//»ô¶û»»ÏàË³Ğò
-u8   CheckBemf[6]={0x05,0x01,0x03,0x02,0x06,0x04};//·´µç¶¯ÊÆ¹ıÁãµãË³Ğò
-//u8   CheckBemf[6]={0x04,0x06,0x02,0x03,0x01,0x05};//·´µç¶¯ÊÆ¹ıÁãµãË³Ğò
+u8   bHallStemps[8]={0x07,0x05,0x03,0x04,0x01,0x00,0x02,0x07};//éœå°”æ¢ç›¸é¡ºåº
+u8   CheckBemf[6]={0x05,0x01,0x03,0x02,0x06,0x04};//åç”µåŠ¨åŠ¿è¿‡é›¶ç‚¹é¡ºåº
+//u8   CheckBemf[6]={0x04,0x06,0x02,0x03,0x01,0x05};//åç”µåŠ¨åŠ¿è¿‡é›¶ç‚¹é¡ºåº
 extern u16 My_PWM;
 extern u16 Hall,time;
-extern bool Direction; 
+extern bool Direction;
 extern void TIM8_Configuration1(void);
 int state,state1,state2,state3,counter1,counter2,counter3,speed_1,aim_speed,check_run,speed_code;
 short ADC_ConvertedValue[5]={0,0,0,0,0};
 TIM_BDTRInitTypeDef TIM_BDTRInitStructure;
 TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure; 
+TIM_OCInitTypeDef  TIM_OCInitStructure;
 EXTI_InitTypeDef EXTI_InitStructure;
-ErrorStatus HSEStartUpStatus;  
+ErrorStatus HSEStartUpStatus;
 
 /* Private function prototypes -----------------------------------------------*/
 void RCC_Configuration(void);
@@ -113,10 +113,10 @@ int pid(int nonce,int aim);
 u8 key_con(void);
 
 ////////////////////////////////
-void PrechargeD(u16 ctime);  //Ô¤³äµç
-void Positioning(u8 bhallstep ,u16 bpwm,u16 ctime);  //µç»ú¶¨Î»
-u8 MotorStart( u16 bpwm,u16 ctime);  //µç»úÆô¶¯
-void MotorStop(void);  //µç»úÍ£Ö¹
+void PrechargeD(u16 ctime);  //é¢„å……ç”µ
+void Positioning(u8 bhallstep ,u16 bpwm,u16 ctime);  //ç”µæœºå®šä½
+u8 MotorStart( u16 bpwm,u16 ctime);  //ç”µæœºå¯åŠ¨
+void MotorStop(void);  //ç”µæœºåœæ­¢
 /*******************************************************************************
 * Function Name  : PrechargeD
 * Description    : chargeD program.
@@ -124,24 +124,24 @@ void MotorStop(void);  //µç»úÍ£Ö¹
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void PrechargeD(u16 ctime)  //Ô¤³äµç
+void PrechargeD(u16 ctime)  //é¢„å……ç”µ
 {
-	   TIM_Cmd(TIM8, ENABLE);//Æô¶¯
+	   TIM_Cmd(TIM8, ENABLE);//å¯åŠ¨
 		  TIM_CtrlPWMOutputs(TIM8, ENABLE);
 	  time=0;
-	 
-	  PWM_UL_ON();  //UÏÂ¹Ü´ò¿ª
-    PWM_VL_ON();  //VÏÂ¹Ü´ò¿ª
-    PWM_WL_ON();  //WÏÂ¹Ü´ò¿ª
+
+	  PWM_UL_ON();  //Uä¸‹ç®¡æ‰“å¼€
+    PWM_VL_ON();  //Vä¸‹ç®¡æ‰“å¼€
+    PWM_WL_ON();  //Wä¸‹ç®¡æ‰“å¼€
 
    while(time<ctime)
 	 {
 		  time=time;
-      time=time; 		 
-	 }		 
-    PWM_UL_OFF();  //UÏÂ¹Ü¹Ø±Õ
-    PWM_VL_OFF();  //VÏÂ¹Ü¹Ø±Õ
-    PWM_WL_OFF();	 //WÏÂ¹Ü¹Ø±Õ
+      time=time;
+	 }
+    PWM_UL_OFF();  //Uä¸‹ç®¡å…³é—­
+    PWM_VL_OFF();  //Vä¸‹ç®¡å…³é—­
+    PWM_WL_OFF();	 //Wä¸‹ç®¡å…³é—­
 }
 
 
@@ -152,18 +152,18 @@ void PrechargeD(u16 ctime)  //Ô¤³äµç
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void Positioning(u8 bhallstep ,u16 bpwm,u16 ctime)  //µç»ú¶¨Î»
+void Positioning(u8 bhallstep ,u16 bpwm,u16 ctime)  //ç”µæœºå®šä½
 {
-	 
-	 My_PWM = bpwm;  //¶¨Î»pwmÖµ
-	 Hall_SW(bhallstep);//¶¨Î»µç»ú
+
+	 My_PWM = bpwm;  //å®šä½pwmå€¼
+	 Hall_SW(bhallstep);//å®šä½ç”µæœº
 	 time=0;
-	 while(time<ctime)  //¶¨Î»Ê±¼ä
+	 while(time<ctime)  //å®šä½æ—¶é—´
 	 {
 		  time=time;
-      time=time; 		 
-	 }		 
-	 
+      time=time;
+	 }
+
 }
 /*******************************************************************************
 * Function Name  : MotorStart
@@ -172,41 +172,41 @@ void Positioning(u8 bhallstep ,u16 bpwm,u16 ctime)  //µç»ú¶¨Î»
 * Output         : None
 * Return         : None
 *******************************************************************************/
-u8 MotorStart( u16 bpwm,u16 ctime)  //µç»úÆô¶¯
+u8 MotorStart( u16 bpwm,u16 ctime)  //ç”µæœºå¯åŠ¨
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQChannel;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//ENABLE;
-	NVIC_Init(&NVIC_InitStructure);	
-	 My_PWM = bpwm;  //Æô¶¯pwmÖµ
-	
+	NVIC_Init(&NVIC_InitStructure);
+	 My_PWM = bpwm;  //å¯åŠ¨pwmå€¼
+
 	do{
-	
+
      bhtime=0;
 		 bhallstep++;
 	 if(bhallstep>5) bhallstep=0;
-		 Hall_SW(CheckBemf[bhallstep]);//Æô¶¯µç»ú
-	 while(bhtime<ctime)  //Æô¶¯Ê±¼ä
+		 Hall_SW(CheckBemf[bhallstep]);//å¯åŠ¨ç”µæœº
+	 while(bhtime<ctime)  //å¯åŠ¨æ—¶é—´
 	  {
-		  bhtime=bhtime;		 
+		  bhtime=bhtime;
 	  }
-		Comtime++; 
- }while(StartOk==0&&Comtime<COM_CNT);	 //Æô¶¯³É¹¦±êÖ¾ÅĞ¶Ï
+		Comtime++;
+ }while(StartOk==0&&Comtime<COM_CNT);	 //å¯åŠ¨æˆåŠŸæ ‡å¿—åˆ¤æ–­
 
  if(Comtime>=COM_CNT)
  {
-	     TIM_Cmd(TIM8, DISABLE);//Í£Ö¹
-		   TIM_CtrlPWMOutputs(TIM8, DISABLE); 
-	     PWM_UL_OFF();  //UÏÂ¹Ü¹Ø±Õ
-       PWM_VL_OFF();  //VÏÂ¹Ü¹Ø±Õ
-       PWM_WL_OFF();	 //WÏÂ¹Ü¹Ø±Õ
-	     return 0; 
+	     TIM_Cmd(TIM8, DISABLE);//åœæ­¢
+		   TIM_CtrlPWMOutputs(TIM8, DISABLE);
+	     PWM_UL_OFF();  //Uä¸‹ç®¡å…³é—­
+       PWM_VL_OFF();  //Vä¸‹ç®¡å…³é—­
+       PWM_WL_OFF();	 //Wä¸‹ç®¡å…³é—­
+	     return 0;
  }
- 
-	return 1;   //Ğ¡ÓÚCOM_CNT´ÎÈÏÎªÆô¶¯³É¹¦
-	 
+
+	return 1;   //å°äºCOM_CNTæ¬¡è®¤ä¸ºå¯åŠ¨æˆåŠŸ
+
 }
 /*******************************************************************************
 * Function Name  : MotorStop
@@ -215,13 +215,13 @@ u8 MotorStart( u16 bpwm,u16 ctime)  //µç»úÆô¶¯
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void MotorStop(void)  //µç»úÍ£Ö¹
+void MotorStop(void)  //ç”µæœºåœæ­¢
 {
-	     TIM_Cmd(TIM8, DISABLE);//Í£Ö¹
-		   TIM_CtrlPWMOutputs(TIM8, DISABLE); 
-	     PWM_UL_OFF();  //UÏÂ¹Ü¹Ø±Õ
-       PWM_VL_OFF();  //VÏÂ¹Ü¹Ø±Õ
-       PWM_WL_OFF();	 //WÏÂ¹Ü¹Ø±Õ
+	     TIM_Cmd(TIM8, DISABLE);//åœæ­¢
+		   TIM_CtrlPWMOutputs(TIM8, DISABLE);
+	     PWM_UL_OFF();  //Uä¸‹ç®¡å…³é—­
+       PWM_VL_OFF();  //Vä¸‹ç®¡å…³é—­
+       PWM_WL_OFF();	 //Wä¸‹ç®¡å…³é—­
 }
 /*******************************************************************************
 * Function Name  : MotorStatus
@@ -230,9 +230,9 @@ void MotorStop(void)  //µç»úÍ£Ö¹
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void MotorStatus(void)  //µç»ú×´Ì¬
+void MotorStatus(void)  //ç”µæœºçŠ¶æ€
 {
- 
+
 	   switch(motorstaus)
 		 {
 			 case CHONGD:
@@ -246,11 +246,11 @@ void MotorStatus(void)  //µç»ú×´Ì¬
 			 case STARRT:
 				   if(MotorStart(500,28)==1)
 					 {
-						    motorstaus= RUN; 
+						    motorstaus= RUN;
 					 }
 					 else
 					 {
-						    motorstaus= FAULT;  
+						    motorstaus= FAULT;
 					 }
 				 break;
 			 case RUN:
@@ -264,7 +264,7 @@ void MotorStatus(void)  //µç»ú×´Ì¬
 }
  /*******************************************************************************
 * Function Name  : UART3_Init
-* Description    : Configure the UART3 
+* Description    : Configure the UART3
 * Input          : None
 * Output         : None
 * Return         : None
@@ -273,23 +273,23 @@ void UART3_Init(void)
 {
   USART_InitTypeDef USART_InitStructure;
  //******************************************************************************
-    //´®¿Ú2²ÎÊı³õÊ¼»¯¶¨Òå²¿·Ö,´®¿Ú2²ÎÊıÎª00 £¬ 8 £¬1 £¬N  ½ÓÊÕÖĞ¶Ï·½Ê½
-//*****************************************************************************  
+    //ä¸²å£2å‚æ•°åˆå§‹åŒ–å®šä¹‰éƒ¨åˆ†,ä¸²å£2å‚æ•°ä¸º00 ï¼Œ 8 ï¼Œ1 ï¼ŒN  æ¥æ”¶ä¸­æ–­æ–¹å¼
+//*****************************************************************************
   USART_DeInit(USART3);
-  USART_InitStructure.USART_BaudRate = 19200; //Éè¶¨´«ÊäËÙÂÊ
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b; //Éè¶¨´«ÊäÊı¾İÎ»Êı
-  USART_InitStructure.USART_StopBits = USART_StopBits_1;    //Éè¶¨Í£Ö¹Î»¸öÊı
-  USART_InitStructure.USART_Parity = USART_Parity_No ;      //²»ÓÃĞ£ÑéÎ»
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//²»ÓÃÁ÷Á¿¿ØÖÆ
-  USART_InitStructure.USART_Mode =   USART_Mode_Tx | USART_Mode_Rx ;   //Ê¹ÓÃ½ÓÊÕºÍ·¢ËÍ¹¦ÄÜ 
-  USART_Init(USART3, &USART_InitStructure);  //³õÊ¼»¯´®¿Ú1
-  
-  USART_ITConfig(USART3, USART_IT_TXE , ENABLE);  //·¢ËÍ
-  USART_ITConfig(USART3, USART_IT_RXNE , ENABLE); //½ÓÊÕ
-  USART_Cmd(USART3, ENABLE);  //Ê¹ÄÜ´®¿Ú1
-   
+  USART_InitStructure.USART_BaudRate = 19200; //è®¾å®šä¼ è¾“é€Ÿç‡
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b; //è®¾å®šä¼ è¾“æ•°æ®ä½æ•°
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;    //è®¾å®šåœæ­¢ä½ä¸ªæ•°
+  USART_InitStructure.USART_Parity = USART_Parity_No ;      //ä¸ç”¨æ ¡éªŒä½
+  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//ä¸ç”¨æµé‡æ§åˆ¶
+  USART_InitStructure.USART_Mode =   USART_Mode_Tx | USART_Mode_Rx ;   //ä½¿ç”¨æ¥æ”¶å’Œå‘é€åŠŸèƒ½
+  USART_Init(USART3, &USART_InitStructure);  //åˆå§‹åŒ–ä¸²å£1
 
-} 
+  USART_ITConfig(USART3, USART_IT_TXE , ENABLE);  //å‘é€
+  USART_ITConfig(USART3, USART_IT_RXNE , ENABLE); //æ¥æ”¶
+  USART_Cmd(USART3, ENABLE);  //ä½¿èƒ½ä¸²å£1
+
+
+}
 /*******************************************************************************
 * Function Name  : USART_Send
 * Description    : USART Send Buffer Content.
@@ -301,13 +301,13 @@ void USART_Send(u8 *Send, u8 Count)
 {
   int i = 0;
   for(i = 0; i < Count; i++)
-  { 
+  {
   	USART_SendData(USART3, (u8)*(Send+i));
     while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET)
     {
     }
   }
-  
+
 }
 
  u8 keytemp=0,bkey;
@@ -325,44 +325,44 @@ int main(void)
 	debug();
 	#endif
   	int i;
-	
+
 	u8 flagccw=0;
 	 	NVIC_InitTypeDef NVIC_InitStructure;
 	/* System Clocks Configuration */
-	RCC_Configuration();//Ê±ÖÓ³õÊ¼»¯
-     
+	RCC_Configuration();//æ—¶é’Ÿåˆå§‹åŒ–
+
 	/* NVIC configuration */
-	NVIC_Configuration();//ÖĞ¶ÏÅäÖÃ
+	NVIC_Configuration();//ä¸­æ–­é…ç½®
   DMA_Configuration1();
 	ADC_Configuration1();
-	
-	TIM8_Configuration1();	 //¶¨Ê±Æ÷³õÊ¼»¯ 
+
+	TIM8_Configuration1();	 //å®šæ—¶å™¨åˆå§‹åŒ–
 	TIM2_Configuration1();
 	TIM4_Configuration1();
 
-	
-	
+
+
 	GPIO_Configuration();  //GPIO
 	UART3_Init();
 	SysTick_Configuration();
 	SysTick_CounterCmd(SysTick_Counter_Enable);
-	
-   StartOk=0;//Æô¶¯³É¹¦±êÖ¾
-   Comtime=0;//Æô¶¯Ê±»»Ïà´ÎÊı
+
+   StartOk=0;//å¯åŠ¨æˆåŠŸæ ‡å¿—
+   Comtime=0;//å¯åŠ¨æ—¶æ¢ç›¸æ¬¡æ•°
    aim_speed =500;
 	while (1)
 	{
-		
-	 MotorStatus();	
-		
-   keytemp= key_con(); //°´¼üÖµ
-		
+
+	 MotorStatus();
+
+   keytemp= key_con(); //æŒ‰é”®å€¼
+
 		if(keytemp==0)
 		{
-			bkey=1; 
+			bkey=1;
 		}
-			
-		
+
+
   if(keytemp==1)
 	{
     if(bkey==1)
@@ -373,20 +373,20 @@ int main(void)
 	  bkey=0;
 		Comtime=0;
 		}
-    
-			
-	}	
-	
+
+
+	}
+
 	if(keytemp==2)
 	{
 		if(bkey==1)
 		{
 			 bkey=0;
-			 TIM_Cmd(TIM8, DISABLE);//Í£Ö¹
-		   TIM_CtrlPWMOutputs(TIM8, DISABLE); 
+			 TIM_Cmd(TIM8, DISABLE);//åœæ­¢
+		   TIM_CtrlPWMOutputs(TIM8, DISABLE);
 		   aim_speed =200;
 		}
-		   
+
 
 	}
   if(keytemp==3)
@@ -394,21 +394,21 @@ int main(void)
 		if(time >1000)
 		{
 			  if(aim_speed <2500)
-				 aim_speed+=10;   //ËÙ¶È¼Ó
+				 aim_speed+=10;   //é€Ÿåº¦åŠ 
 				time =0;
 		}
-		 My_PWM = aim_speed;  //Éè¶¨PWMÖµ
-			
+		 My_PWM = aim_speed;  //è®¾å®šPWMå€¼
+
 	}
 else if(keytemp==4)
 {
 	 	if(time >1000)
 		{
 			  if(aim_speed >200 )
-				 aim_speed-=10;//ËÙ¶È¼õ
+				 aim_speed-=10;//é€Ÿåº¦å‡
 				time =0;
 		}
-		 My_PWM = aim_speed;  //Éè¶¨PWMÖµ
+		 My_PWM = aim_speed;  //è®¾å®šPWMå€¼
 }
 //if(keytemp==5)
 //{
@@ -417,25 +417,25 @@ else if(keytemp==4)
 //			time=0;
 //			if(flagccw==0)
 //		{
-//			 Direction=1; //Õı´«
-//		
+//			 Direction=1; //æ­£ä¼ 
+//
 //		}
 //		else
 //		{
-//			  Direction=0;//·´×ª
-//			  
+//			  Direction=0;//åè½¬
+//
 //		}
 //		flagccw=~flagccw;
 //		}
-//	  
-//  
-//	
+//
+//
+//
 //}
 
- 
 
 
-	
+
+
 	}
 }
 
@@ -444,9 +444,9 @@ int pid(int nonce,int aim)
 	static int ek_2=0;
 	static int ek_1=0;
 	static int ek=0;
-//	int ec;	
-	int uk; 
-	
+//	int ec;
+	int uk;
+
 	ek=aim-nonce;
 //	ec=ek/T;
 	uk=kp*(ek-ek_1+ki*ek+kd*(ek-2*ek_1+ek_2));
@@ -460,14 +460,14 @@ void delays(u16 cnt)
 	u16 bctime;
 	for(bctime=0;bctime>cnt;bctime++)
 	{
-		 
-	}
-    
-}
-void EXTI9_5_IRQHandler(void)   //»ô¶ûÏßÖĞ¶ÏÅĞ¶Ï
-{ 
 
-  u8 bHall=0,bHallstemp;	
+	}
+
+}
+void EXTI9_5_IRQHandler(void)   //éœå°”çº¿ä¸­æ–­åˆ¤æ–­
+{
+
+  u8 bHall=0,bHallstemp;
 	if(EXTI_GetITStatus(EXTI_Line6)!= RESET)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line6);
@@ -480,58 +480,58 @@ void EXTI9_5_IRQHandler(void)   //»ô¶ûÏßÖĞ¶ÏÅĞ¶Ï
 	{
 		EXTI_ClearITPendingBit(EXTI_Line8);
 	}
-	 
+
 	bHall=GPIO_ReadInputData(GPIOB);
  delays(2);
 	bHallstemp=GPIO_ReadInputData(GPIOB);
- 
-	
+
+
 	if(bHall!=bHallstemp) return;
 	bHall=0;
-	
-	//AÏà·´µç¶¯ÊÆ¹ıÁãµã¼ì²â
+
+	//Aç›¸åç”µåŠ¨åŠ¿è¿‡é›¶ç‚¹æ£€æµ‹
 	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6)==1)
 	{
-		bHall|= BIT0; 
+		bHall|= BIT0;
 	}
-	//BÏà·´µç¶¯ÊÆ¹ıÁãµã¼ì²â
+	//Bç›¸åç”µåŠ¨åŠ¿è¿‡é›¶ç‚¹æ£€æµ‹
 	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7)==1)
 	{
-		bHall|= BIT1; 
+		bHall|= BIT1;
 	}
-	//CÏà·´µç¶¯ÊÆ¹ıÁãµã¼ì²â
+	//Cç›¸åç”µåŠ¨åŠ¿è¿‡é›¶ç‚¹æ£€æµ‹
 	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8)==1)
 	{
-		bHall|= BIT2; 
+		bHall|= BIT2;
 	}
 
-	
 
-	 
-	if(StartOk==0) //Æô¶¯
+
+
+	if(StartOk==0) //å¯åŠ¨
 	{
 		 if(bHall == CheckBemf[bhallstep])
 		 {
-			 stComcount++; 
- 		 
+			 stComcount++;
+
 		 }
      else
    	 {
 			 stComcount=0;
-		 }	
-    if(stComcount>=ST_CNT)//Á¬Ğø¼ì²âµ½Ò»¶¨ÊıÁ¿¹ıÁãµãÇĞ»»µ½¹ıÁã»»Ïà
+		 }
+    if(stComcount>=ST_CNT)//è¿ç»­æ£€æµ‹åˆ°ä¸€å®šæ•°é‡è¿‡é›¶ç‚¹åˆ‡æ¢åˆ°è¿‡é›¶æ¢ç›¸
  	   {
 		   StartOk=1;
-	
-	   }		 
+
+	   }
 	}
   if(StartOk==1)
 	{
-  Hall_SW(bHall);	
+  Hall_SW(bHall);
 	}
- 
+
 }
- 
+
 /*******************************************************************************
 * Function Name  : RCC_Configuration
 * Description    : Configures the different system clocks.
@@ -615,27 +615,27 @@ u8 key_con(void)
 	 if(!GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_5))
 	 {
 		 key=5;
-		 
+
 	 }
 	  if(!GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13))
 	 {
 		 key=1;
-		 
+
 	 }
 	  if(!GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14))
 	 {
 		 key=2;
-		 
+
 	 }
 	  if(!GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_15))
 	 {
 		 key=3;
-		 
+
 	 }
 	  if(!GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_5))
 	 {
 		 key=4;
-		 
+
 	 }
 	 return key;
 }
@@ -648,78 +648,78 @@ u8 key_con(void)
 *******************************************************************************/
 void GPIO_Configuration(void)
 {
-	GPIO_InitTypeDef GPIO_InitStructure;  
+	GPIO_InitTypeDef GPIO_InitStructure;
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO|RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOD ,ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
-	//°´¼üÊäÈë
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15 ;          
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//IO¿ÚÉÏÀ­
-  GPIO_Init(GPIOC, &GPIO_InitStructure);   
-		//°´¼üÊäÈë
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 ;          
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//IO¿ÚÉÏÀ­
-  GPIO_Init(GPIOB, &GPIO_InitStructure);  
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2  ;           
-//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//IO¿Ú
-//  GPIO_Init(GPIOB, &GPIO_InitStructure);   
-	//ledÊä³ö
+	//æŒ‰é”®è¾“å…¥
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15 ;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//IOå£ä¸Šæ‹‰
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+		//æŒ‰é”®è¾“å…¥
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 ;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//IOå£ä¸Šæ‹‰
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2  ;
+//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//IOå£
+//  GPIO_Init(GPIOB, &GPIO_InitStructure);
+	//ledè¾“å‡º
 	 GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
 	 GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_OD;
-	 GPIO_Init(GPIOD, &GPIO_InitStructure);  
-	 
-  	/* ÅäÖÃHall½Ó¿ÚIO */
+	 GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+  	/* é…ç½®Hallæ¥å£IO */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	
-	/*»ô¶ûĞÅºÅÏßÖĞ¶ÏÅäÖÃ*/
+
+	/*éœå°”ä¿¡å·çº¿ä¸­æ–­é…ç½®*/
  	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource6);
 	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource7);
 	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource8);
- 
+
 	EXTI_InitStructure.EXTI_Line = EXTI_Line6|EXTI_Line7|EXTI_Line8;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-	EXTI_Init(&EXTI_InitStructure);	
+	EXTI_Init(&EXTI_InitStructure);
 
-	 /*PC6,PC7,PC8 ÎªÉÏ°ëÇÅ±Û*/
+	 /*PC6,PC7,PC8 ä¸ºä¸ŠåŠæ¡¥è‡‚*/
 	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6| GPIO_Pin_7 | GPIO_Pin_8 ;
 	  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	  GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-	  /*PB0,PB1,PA7 ÎªÏÂ°ëÇÅ±Û*/
+	  /*PB0,PB1,PA7 ä¸ºä¸‹åŠæ¡¥è‡‚*/
 	  GPIO_InitStructure.GPIO_Pin =   GPIO_Pin_0 | GPIO_Pin_1;
 	  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	  GPIO_Init(GPIOB, &GPIO_InitStructure);
-		
+
 		GPIO_InitStructure.GPIO_Pin =   GPIO_Pin_7;
 	  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	  GPIO_Init(GPIOA, &GPIO_InitStructure);
-		
-		 //******************************************************************************
-//´®¿Ú3ËùÊ¹ÓÃ¹Ü½ÅÊä³öÊäÈë¶¨Òå
-//******************************************************************************
-//¶¨ÒåUART3 TX (PB.10)½ÅÎª¸´ÓÃÍÆÍìÊä³ö
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;         //IO¿ÚµÄµÚ10½Å
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; //IO¿ÚËÙ¶È
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;   //IO¿Ú¸´ÓÃÍÆÍìÊä³ö
-  GPIO_Init(GPIOB, &GPIO_InitStructure);            //³õÊ¼»¯´®¿Ú3Êä³öIO¿Ú
 
-  // ¶¨Òå USART3 Rx (PB.11)ÎªĞü¿ÕÊäÈë 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;           //IO¿ÚµÄµÚ11½Å
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//IO¿ÚĞü¿ÕÊäÈë
-  GPIO_Init(GPIOB, &GPIO_InitStructure);   
-	
+		 //******************************************************************************
+//ä¸²å£3æ‰€ä½¿ç”¨ç®¡è„šè¾“å‡ºè¾“å…¥å®šä¹‰
+//******************************************************************************
+//å®šä¹‰UART3 TX (PB.10)è„šä¸ºå¤ç”¨æ¨æŒ½è¾“å‡º
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;         //IOå£çš„ç¬¬10è„š
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; //IOå£é€Ÿåº¦
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;   //IOå£å¤ç”¨æ¨æŒ½è¾“å‡º
+  GPIO_Init(GPIOB, &GPIO_InitStructure);            //åˆå§‹åŒ–ä¸²å£3è¾“å‡ºIOå£
+
+  // å®šä¹‰ USART3 Rx (PB.11)ä¸ºæ‚¬ç©ºè¾“å…¥
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;           //IOå£çš„ç¬¬11è„š
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//IOå£æ‚¬ç©ºè¾“å…¥
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
 
 }
- 
-//±Õ»·¼ÆËã×Ó³ÌĞò
+
+//é—­ç¯è®¡ç®—å­ç¨‹åº
 void CalculateDC(int u,int y)
 {
 	ek=u-y;
@@ -730,18 +730,18 @@ void CalculateDC(int u,int y)
 		if(duk>1)duk=1;
 		if(duk<-1)duk=-1;
 		if(du>10)du=10;
-		if(du<-5)du=-5;	
-		pwm+=du;    
+		if(du<-5)du=-5;
+		pwm+=du;
 		if(pwm<60)
 		{
-			pwm=60;		
+			pwm=60;
 		}
 		if(pwm>0x7FE)
 		{
 
-			pwm=0x7FE;	
+			pwm=0x7FE;
 		}
-	
+
 		ek2=ek1;
 		ek1=ek;
 	}
@@ -757,47 +757,47 @@ void CalculateDC(int u,int y)
 void NVIC_Configuration(void)
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
-  
-	#ifdef  VECT_TAB_RAM  
-		/* Set the Vector Table base location at 0x20000000 */ 
-		NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0); 
+
+	#ifdef  VECT_TAB_RAM
+		/* Set the Vector Table base location at 0x20000000 */
+		NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);
 	#else  /* VECT_TAB_FLASH  */
-		/* Set the Vector Table base location at 0x08000000 */ 
-		NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);   
+		/* Set the Vector Table base location at 0x08000000 */
+		NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
 	#endif
 
 	/* Configure one bit for preemption priority */
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-  
+
 
 
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQChannel;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;//ENABLE;
-	NVIC_Init(&NVIC_InitStructure);	  
+	NVIC_Init(&NVIC_InitStructure);
 
-	
 
-	  
-	
+
+
+
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQChannel;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);	  	
-		   
+	NVIC_Init(&NVIC_InitStructure);
+
 	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQChannel;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);	  		
+	NVIC_Init(&NVIC_InitStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQChannel;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);	  	
+	NVIC_Init(&NVIC_InitStructure);
 
 }
 
@@ -812,7 +812,7 @@ void NVIC_Configuration(void)
 * Return         : None
 *******************************************************************************/
 void assert_failed(u8* file, u32 line)
-{ 
+{
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
@@ -834,13 +834,13 @@ void SysTick_Configuration(void)
 {
     /* Select AHB clock(HCLK) as SysTick clock source */
     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
-    
+
     /* Set SysTick Priority to 3 */
     NVIC_SystemHandlerPriorityConfig(SystemHandler_SysTick, 5, 0);
-    
+
     /* SysTick interrupt each 1ms with HCLK equal to 72MHz */
     SysTick_SetReload(900000);
-    
+
     /* Enable the SysTick Interrupt */
     SysTick_ITConfig(ENABLE);
 }
@@ -858,7 +858,7 @@ void Delay(u32 nCount)
 
   /* Enable the SysTick Counter */
   //SysTick_CounterCmd(SysTick_Counter_Enable);
-  
+
   while(TimingDelay != 0)
   {
   }

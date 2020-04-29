@@ -1,28 +1,28 @@
  #include "stm32f10x_lib.h"
- extern TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
- extern TIM_OCInitTypeDef  TIM_OCInitStructure;
-void TIM2_Configuration1(void)
-{
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-    //  TIM_OCInitTypeDef  TIM_OCInitStructure ;
-    TIM_DeInit( TIM2);                              //¸´Î»TIM2¶¨Ê±Æ÷
+  extern TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+  extern TIM_OCInitTypeDef  TIM_OCInitStructure;
+ void TIM2_Configuration1(void)
+ {
+     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+     //  TIM_OCInitTypeDef  TIM_OCInitStructure ;
+     TIM_DeInit( TIM2);                              //å¤ä½TIM2å®šæ—¶å™¨
 
-    /* TIM2 clock enable [TIM2¶¨Ê±Æ÷ÔÊĞí]*/
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+     /* TIM2 clock enable [TIM2å®šæ—¶å™¨å…è®¸]*/
+     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
-    /* TIM2 configuration */
-    TIM_TimeBaseStructure.TIM_Period = 10;          //       
-    TIM_TimeBaseStructure.TIM_Prescaler = 719;    // 72M/(35999+1)/10 = 200Hz       
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;  // Ê±ÖÓ·Ö¸î  
-    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //¼ÆÊı·½ÏòÏòÉÏ¼ÆÊı
-    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+     /* TIM2 configuration */
+     TIM_TimeBaseStructure.TIM_Period = 10;          //
+     TIM_TimeBaseStructure.TIM_Prescaler = 719;    // 72M/(35999+1)/10 = 200Hz
+     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;  // æ—¶é’Ÿåˆ†å‰²
+     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //è®¡æ•°æ–¹å‘å‘ä¸Šè®¡æ•°
+     TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-    /* Clear TIM2 update pending flag[Çå³ıTIM2Òç³öÖĞ¶Ï±êÖ¾] */
-    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
+     /* Clear TIM2 update pending flag[æ¸…é™¤TIM2æº¢å‡ºä¸­æ–­æ ‡å¿—] */
+     TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 
-    /* Enable TIM2 Update interrupt [TIM2Òç³öÖĞ¶ÏÔÊĞí]*/
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);  
+     /* Enable TIM2 Update interrupt [TIM2æº¢å‡ºä¸­æ–­å…è®¸]*/
+     TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
 
-    /* TIM2 enable counter [ÔÊĞítim2¼ÆÊı]*/
-    TIM_Cmd(TIM2, ENABLE);
-}
+     /* TIM2 enable counter [å…è®¸tim2è®¡æ•°]*/
+     TIM_Cmd(TIM2, ENABLE);
+ }

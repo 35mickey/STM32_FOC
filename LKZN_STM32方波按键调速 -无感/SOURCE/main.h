@@ -24,7 +24,7 @@
 //#include "LCD1602.h"
 
 #define CLOCKWISE      1
-#define ANTICLOCKWISE  0			
+#define ANTICLOCKWISE  0
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
